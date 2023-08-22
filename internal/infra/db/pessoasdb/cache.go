@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/bytedance/sonic"
 	"github.com/dscamargo/rinha_backend_go/internal/domain/pessoa"
-	"github.com/dscamargo/rinha_backend_go/shared"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/redis/rueidis"
 	"os"
@@ -29,9 +28,6 @@ func NewPessoasDbCache() *PessoasDbCache {
 }
 
 func (c *PessoasDbCache) GetPessoaCache(id string) (*pessoa.Pessoa, error) {
-	t := shared.Top("get-pessoa-cache")
-	defer t()
-
 	cmd := c.client.B().Get().Key(id).Cache()
 	pBytes, err := c.client.DoCache(context.Background(), cmd, 30*time.Minute).AsBytes()
 	if err != nil {
@@ -48,9 +44,6 @@ func (c *PessoasDbCache) GetPessoaCache(id string) (*pessoa.Pessoa, error) {
 }
 
 func (c *PessoasDbCache) GetApelidoUtilizado(apelido string) (bool, error) {
-	t := shared.Top("get-apelido-cache")
-	defer t()
-
 	cmd := c.client.B().Getbit().Key(apelido).Offset(0).Cache()
 	exists, err := c.client.DoCache(context.Background(), cmd, 30*time.Minute).AsBool()
 	if err != nil {
@@ -64,9 +57,6 @@ func (c *PessoasDbCache) GetApelidoUtilizado(apelido string) (bool, error) {
 }
 
 func (c *PessoasDbCache) SetPessoaEApelido(value *pessoa.Pessoa) error {
-	t := shared.Top("set-in-cache")
-	defer t()
-
 	valueStr, err := sonic.MarshalString(value)
 	if err != nil {
 		log.Errorf("Erro ao serializar pessoa %v", err)
