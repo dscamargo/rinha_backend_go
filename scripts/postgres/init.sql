@@ -9,6 +9,6 @@ CREATE TABLE IF NOT EXISTS public.pessoas (
     search text NOT NULL
 );
 
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_people_trigram ON public.pessoas USING gist (
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_pessoas_trigram ON public.pessoas USING gist (
     search gist_trgm_ops(siglen = 64)
 );

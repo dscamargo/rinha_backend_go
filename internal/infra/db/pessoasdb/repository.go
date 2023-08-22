@@ -120,17 +120,17 @@ func (r *PessoaRepository) CheckApelido(apelido string) (bool, error) {
 func formatPessoasResult(rows pgx.Rows) ([]pessoa.Pessoa, error) {
 	result := make([]pessoa.Pessoa, 0)
 	for rows.Next() {
-		var person pessoa.Pessoa
+		var ps pessoa.Pessoa
 		var stackStr string
-		err := rows.Scan(&person.ID, &person.Nome, &person.Apelido, &person.Nascimento, &stackStr)
+		err := rows.Scan(&ps.ID, &ps.Nome, &ps.Apelido, &ps.Nascimento, &stackStr)
 		if err != nil {
 			log.Errorf("Erro ao buscar pessoas no banco de dados %v", err)
 			return nil, err
 		}
 
-		person.Stack = strings.Split(stackStr, ",")
+		ps.Stack = strings.Split(stackStr, ",")
 
-		result = append(result, person)
+		result = append(result, ps)
 	}
 	return result, nil
 }
