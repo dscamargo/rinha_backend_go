@@ -10,13 +10,19 @@ import (
 )
 
 type PessoaController struct {
-	createPessoa *pessoa.CreatePessoa
-	findPessoa   *pessoa.FindPessoa
-	countPessoa  *pessoa.CountPessoas
+	createPessoa  *pessoa.CreatePessoa
+	findPessoa    *pessoa.FindPessoa
+	countPessoa   *pessoa.CountPessoas
+	searchPessoas *pessoa.SearchPessoas
 }
 
-func NewPessoaController(createPessoa *pessoa.CreatePessoa, findPessoa *pessoa.FindPessoa, countPessoa *pessoa.CountPessoas) *PessoaController {
-	return &PessoaController{createPessoa, findPessoa, countPessoa}
+func NewPessoaController(createPessoa *pessoa.CreatePessoa, findPessoa *pessoa.FindPessoa, countPessoa *pessoa.CountPessoas, searchPessoas *pessoa.SearchPessoas) *PessoaController {
+	return &PessoaController{
+		createPessoa,
+		findPessoa,
+		countPessoa,
+		searchPessoas,
+	}
 }
 
 type CreatePessoaRequest struct {
@@ -92,7 +98,7 @@ func (p *PessoaController) List(c *fiber.Ctx) error {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{"error": "invalid_param"})
 	}
 
-	ps, err := p.findPessoa.Search(term)
+	ps, err := p.searchPessoas.Exec(term)
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "Internal server error"})
 	}
@@ -106,7 +112,7 @@ func (p *PessoaController) List(c *fiber.Ctx) error {
 }
 func (p *PessoaController) Show(c *fiber.Ctx) error {
 	id := c.Params("id")
-	ps, err := p.findPessoa.FindById(id)
+	ps, err := p.findPessoa.Exec(id)
 	if err != nil {
 		return c.Status(http.StatusNotFound).JSON(fiber.Map{"error": "not_found"})
 	}

@@ -9,9 +9,18 @@ func NewCreatePessoa(repository Repository) *CreatePessoa {
 }
 
 func (c *CreatePessoa) Exec(nome, apelido, nascimento string, stack []string) (*Pessoa, error) {
+	apelidoUtilizado, err := c.repository.CheckApelido(apelido)
+	if err != nil {
+		return nil, err
+	}
+
+	if apelidoUtilizado {
+		return nil, ErrApelidoJaUtilizado
+	}
+
 	pessoa := NewPessoa(nome, apelido, nascimento, stack)
 
-	_, err := c.repository.Create(pessoa)
+	err = c.repository.Create(pessoa)
 	if err != nil {
 		return nil, err
 	}

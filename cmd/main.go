@@ -22,8 +22,8 @@ func main() {
 		http.Module,
 		db.Module,
 		pessoa.Module,
-		fx.Invoke(func(c *pessoasdb.Worker) {
-			go c.Process()
+		fx.Invoke(func(dispatcher *pessoasdb.Dispatcher) {
+			go dispatcher.Run()
 		}),
 		fx.Invoke(func(*fasthttp.Server) {}),
 	)

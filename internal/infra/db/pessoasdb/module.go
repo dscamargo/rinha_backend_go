@@ -7,8 +7,8 @@ import (
 
 var Module = fx.Provide(
 	NewPessoasDbCache,
-	NewWorker,
-	NewInsertChannel,
+	NewDispatcher,
+	NewJobQueue,
 	fx.Annotate(
 		NewPessoaRepository,
 		fx.As(new(pessoa.Repository)),

@@ -6,4 +6,5 @@ var Module = fx.Provide(
 	NewCountPessoas,
 	NewFindPessoa,
 	NewCreatePessoa,
+	NewSearchPessoas,
 )

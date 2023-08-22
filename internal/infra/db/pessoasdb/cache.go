@@ -63,7 +63,7 @@ func (c *PessoasDbCache) SetPessoaEApelido(value *pessoa.Pessoa) error {
 		return err
 	}
 
-	cmdPessoa := c.client.B().Set().Key(value.ID).Value(valueStr).Build()
+	cmdPessoa := c.client.B().Set().Key(value.ID).Value(valueStr).Ex(10 * time.Second).Build()
 	cmdApelido := c.client.B().Setbit().Key(value.Apelido).Offset(0).Value(1).Build()
 
 	cmds := make(rueidis.Commands, 0, 2)
@@ -79,4 +79,29 @@ func (c *PessoasDbCache) SetPessoaEApelido(value *pessoa.Pessoa) error {
 	}
 
 	return nil
+}
+
+func (c *PessoasDbCache) SetSearch(term string, result []pessoa.Pessoa) error {
+	valStr, err := sonic.MarshalString(result)
+	if err != nil {
+		return err
+	}
+	cmd := c.client.B().Set().Key("busca:" + term).Value(valStr).Ex(15 * time.Minute).Build()
+	return c.client.Do(context.Background(), cmd).Error()
+}
+
+func (c *PessoasDbCache) GetSearch(term string) ([]pessoa.Pessoa, error) {
+	cmd := c.client.B().Get().Key("busca:" + term).Cache()
+	pBytes, err := c.client.DoCache(context.Background(), cmd, 15*time.Minute).AsBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	var ps []pessoa.Pessoa
+	err = sonic.Unmarshal(pBytes, &ps)
+	if err != nil {
+		return nil, err
+	}
+
+	return ps, nil
 }

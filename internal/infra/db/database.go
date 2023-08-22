@@ -18,15 +18,13 @@ func NewPGDatabase() *pgxpool.Pool {
 		dbUrl := os.Getenv("DATABASE_URL")
 		poolConfig, err := pgxpool.ParseConfig(dbUrl)
 		if err != nil {
-			log.Fatal("Erro ao buscar configurações pgx")
+			log.Fatal("Erro ao buscar configurações poolConfig")
 		}
 
-		conn, err := pgxpool.NewWithConfig(context.Background(), poolConfig)
+		db, err = pgxpool.NewWithConfig(context.Background(), poolConfig)
 		if err != nil {
 			log.Fatal("Erro ao conectar no banco de dados")
 		}
-
-		db = conn
 	})
 
 	return db
