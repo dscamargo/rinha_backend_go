@@ -3,11 +3,11 @@ package pessoasdb
 import (
 	"context"
 	"github.com/bytedance/sonic"
+	"github.com/dscamargo/rinha_backend_go/internal/domain/pessoa"
+	"github.com/dscamargo/rinha_backend_go/shared"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/redis/rueidis"
 	"os"
-	"rinha_v2/internal/domain/pessoa"
-	"rinha_v2/shared"
 	"time"
 )
 

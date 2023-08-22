@@ -3,9 +3,9 @@ package controllers
 import (
 	"errors"
 	"fmt"
+	"github.com/dscamargo/rinha_backend_go/internal/domain/pessoa"
 	"github.com/gofiber/fiber/v2"
 	"net/http"
-	"rinha_v2/internal/domain/pessoa"
 	"time"
 )
 

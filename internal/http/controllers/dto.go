@@ -1,6 +1,6 @@
 package controllers
 
-import "rinha_v2/internal/domain/pessoa"
+import "github.com/dscamargo/rinha_backend_go/internal/domain/pessoa"
 
 type PessoaOutput struct {
 	ID         string   `json:"id"`

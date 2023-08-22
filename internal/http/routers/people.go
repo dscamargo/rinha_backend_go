@@ -1,8 +1,8 @@
 package routers
 
 import (
+	"github.com/dscamargo/rinha_backend_go/internal/http/controllers"
 	"github.com/gofiber/fiber/v2"
-	"rinha_v2/internal/http/controllers"
 )
 
 type PessoaRouter struct {

@@ -2,9 +2,9 @@ package pessoasdb
 
 import (
 	"context"
+	"github.com/dscamargo/rinha_backend_go/internal/domain/pessoa"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"rinha_v2/internal/domain/pessoa"
 )
 
 type Worker struct {

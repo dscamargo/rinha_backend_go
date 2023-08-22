@@ -1,8 +1,8 @@
 package pessoasdb
 
 import (
+	"github.com/dscamargo/rinha_backend_go/internal/domain/pessoa"
 	"go.uber.org/fx"
-	"rinha_v2/internal/domain/pessoa"
 )
 
 var Module = fx.Provide(

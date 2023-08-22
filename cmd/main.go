@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
+	"github.com/dscamargo/rinha_backend_go/internal/domain/pessoa"
+	"github.com/dscamargo/rinha_backend_go/internal/http"
+	"github.com/dscamargo/rinha_backend_go/internal/http/controllers"
+	"github.com/dscamargo/rinha_backend_go/internal/http/routers"
+	"github.com/dscamargo/rinha_backend_go/internal/infra/db"
+	"github.com/dscamargo/rinha_backend_go/internal/infra/db/pessoasdb"
 	"github.com/valyala/fasthttp"
 	"go.uber.org/fx"
 	"os"
-	"rinha_v2/internal/domain/pessoa"
-	"rinha_v2/internal/http"
-	"rinha_v2/internal/http/controllers"
-	"rinha_v2/internal/http/routers"
-	"rinha_v2/internal/infra/db"
-	"rinha_v2/internal/infra/db/pessoasdb"
 )
 
 func main() {

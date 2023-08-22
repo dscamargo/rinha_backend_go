@@ -1,8 +1,8 @@
 package db
 
 import (
+	"github.com/dscamargo/rinha_backend_go/internal/infra/db/pessoasdb"
 	"go.uber.org/fx"
-	"rinha_v2/internal/infra/db/pessoasdb"
 )
 
 var Module = fx.Options(
