@@ -3,7 +3,7 @@ WORKDIR /app
 COPY go.* ./
 RUN go mod download
 COPY . ./
-RUN CGO_ENABLED=0 go build -v -o /bin/app ./cmd/main.go
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -v -o /bin/app ./cmd/main.go
 
 FROM alpine:3.14.10
 RUN apk add dumb-init
