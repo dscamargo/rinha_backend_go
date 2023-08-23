@@ -80,7 +80,6 @@ func (w Worker) processData(dataCh chan Job, insertCh chan []Job) {
 		case <-tickInsert:
 			batchLen := len(batch)
 			if batchLen > 0 {
-				log.Infof("Tick insert (len=%d)", batchLen)
 				insertCh <- batch
 
 				batch = make([]Job, 0, batchMaxSize)
