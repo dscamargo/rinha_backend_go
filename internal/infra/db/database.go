@@ -2,9 +2,9 @@ package db
 
 import (
 	"context"
+	"github.com/dscamargo/rinha_backend_go/config"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"os"
 	"sync"
 )
 
@@ -13,9 +13,9 @@ var (
 	once sync.Once
 )
 
-func NewPGDatabase() *pgxpool.Pool {
+func NewPGDatabase(cfg *config.Config) *pgxpool.Pool {
 	once.Do(func() {
-		dbUrl := os.Getenv("DATABASE_URL")
+		dbUrl := cfg.Database.Url
 		poolConfig, err := pgxpool.ParseConfig(dbUrl)
 		if err != nil {
 			log.Fatal("Erro ao buscar configurações poolConfig")
