@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@master
       - name: Build
@@ -18,6 +19,7 @@ jobs:
     needs: build
     permissions:
       contents: write
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v3
       - run: docker-compose up -d
