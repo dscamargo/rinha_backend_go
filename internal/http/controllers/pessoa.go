@@ -3,26 +3,18 @@ package controllers
 import (
 	"errors"
 	"fmt"
-	"github.com/dscamargo/rinha_backend_go/internal/domain/pessoa"
+	"github.com/dscamargo/rinha_backend_go/pessoa"
 	"github.com/gofiber/fiber/v2"
 	"net/http"
 	"time"
 )
 
 type PessoaController struct {
-	createPessoa  *pessoa.CreatePessoa
-	findPessoa    *pessoa.FindPessoa
-	countPessoa   *pessoa.CountPessoas
-	searchPessoas *pessoa.SearchPessoas
+	service pessoa.UseCase
 }
 
-func NewPessoaController(createPessoa *pessoa.CreatePessoa, findPessoa *pessoa.FindPessoa, countPessoa *pessoa.CountPessoas, searchPessoas *pessoa.SearchPessoas) *PessoaController {
-	return &PessoaController{
-		createPessoa,
-		findPessoa,
-		countPessoa,
-		searchPessoas,
-	}
+func NewPessoaController(service pessoa.UseCase) *PessoaController {
+	return &PessoaController{service}
 }
 
 type CreatePessoaRequest struct {
@@ -73,7 +65,7 @@ func (p *PessoaController) Create(c *fiber.Ctx) error {
 		return c.Status(http.StatusUnprocessableEntity).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	createdPessoa, err := p.createPessoa.Exec(
+	createdPessoa, err := p.service.Create(
 		body.Nome,
 		body.Apelido,
 		body.Nascimento,
@@ -98,7 +90,7 @@ func (p *PessoaController) List(c *fiber.Ctx) error {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{"error": "invalid_param"})
 	}
 
-	ps, err := p.searchPessoas.Exec(term)
+	ps, err := p.service.Search(term)
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "Internal server error"})
 	}
@@ -112,7 +104,7 @@ func (p *PessoaController) List(c *fiber.Ctx) error {
 }
 func (p *PessoaController) Show(c *fiber.Ctx) error {
 	id := c.Params("id")
-	ps, err := p.findPessoa.Exec(id)
+	ps, err := p.service.FindById(id)
 	if err != nil {
 		return c.Status(http.StatusNotFound).JSON(fiber.Map{"error": "not_found"})
 	}
@@ -120,7 +112,7 @@ func (p *PessoaController) Show(c *fiber.Ctx) error {
 
 }
 func (p *PessoaController) Count(c *fiber.Ctx) error {
-	total, err := p.countPessoa.Exec()
+	total, err := p.service.Count()
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "Internal server error"})
 	}

@@ -1,4 +1,4 @@
-package pessoasdb
+package postgres
 
 const (
 	QuerySelectPessoaById    = "SELECT id, nome, apelido, nascimento, stack FROM public.pessoas WHERE id = $1;"

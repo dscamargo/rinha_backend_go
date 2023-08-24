@@ -1,8 +1,8 @@
-package pessoasdb
+package postgres
 
 import (
 	"context"
-	"github.com/dscamargo/rinha_backend_go/internal/domain/pessoa"
+	"github.com/dscamargo/rinha_backend_go/pessoa"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -78,8 +78,8 @@ func (w Worker) processData(dataCh chan Job, insertCh chan []Job) {
 			batch = append(batch, data)
 
 		case <-tickInsert:
-			batchLen := len(batch)
-			if batchLen > 0 {
+			if len(batch) > 0 {
+				log.Infof("Insert - Size: %d", len(batch))
 				insertCh <- batch
 
 				batch = make([]Job, 0, batchMaxSize)
